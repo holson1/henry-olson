@@ -3,55 +3,55 @@ from lxml import etree
 import time
 
 # parse the XML response for the etd command
-def etdParse(xml):
+def etd_parse(xml):
     tree = etree.fromstring(xml)
     #time = tree.xpath("/root/time/text()")
 
-    slackResponse = {"text": "", "attachments": []}
+    slack_response = {"text": "", "attachments": []}
 
-    originStation = tree.find('./station')
-    originStationName = originStation.findtext('./name')
-    slackResponse['text'] = "Estimated Departure Times for %s" % (originStationName)
+    origin_station = tree.find('./station')
+    origin_station_name = origin_station.findtext('./name')
+    slack_response['text'] = "Estimated Departure Times for %s" % (origin_station_name)
 
-    etdList = originStation.findall('etd')
-    for etd in etdList:
+    etd_list = origin_station.findall('etd')
+    for etd in etd_list:
         attachment = {"title": ""}
         destination = etd.findtext('./destination')
 
         attachment['title'] = destination
         attachment['fields'] = []
 
-        estimateList = etd.findall('estimate')
-        for estimate in estimateList:
+        estimate_list = etd.findall('estimate')
+        for estimate in estimate_list:
             minutes = estimate.findtext('./minutes')
             color = estimate.findtext('./hexcolor')
-            carLength = estimate.findtext('./length')
+            car_length = estimate.findtext('./length')
             
-            displayString = "%s car train departing in %s minutes" % (carLength, minutes)
+            display_string = "%s car train departing in %s minutes" % (car_length, minutes)
 
-            field = {"value": displayString, "short": "false"}
+            field = {"value": display_string, "short": "false"}
 
             attachment['fields'].append(field)
             attachment['color'] = color
             
 
-        slackResponse['attachments'].append(attachment)
+        slack_response['attachments'].append(attachment)
 
-    slackResponse['footer'] = "bart slack app"
-    slackResponse['ts'] = time.time()
+    slack_response['footer'] = "bart slack app"
+    slack_response['ts'] = time.time()
 
-    return slackResponse
+    return slack_response
 
 # parse the xml response for the sched - depart command
-def departParse(xml):
+def depart_parse(xml):
     tree = etree.fromstring(xml)
 
-    slackResponse = {"text": "", "attachments": []}
+    slack_response = {"text": "", "attachments": []}
 
     origin = tree.findtext('./origin')
     destination = tree.findtext('./destination')
 
-    slackResponse['text'] = "Trips from %s to %s :" % (origin, destination)
+    slack_response['text'] = "Trips from %s to %s :" % (origin, destination)
 
     request = tree.find('./schedule/request')
     trips = request.findall('trip')
@@ -68,21 +68,21 @@ def departParse(xml):
             short = "true"
 
         for leg in legs:
-            timeDepart = leg.get('origTimeMin')
-            timeArrive = leg.get('destTimeMin')
-            headStation = leg.get('trainHeadStation')
-            legOrigin = leg.get('origin')
-            legDestination = leg.get('destination')
+            time_depart = leg.get('origTimeMin')
+            time_arrive = leg.get('destTimeMin')
+            head_station = leg.get('trainHeadStation')
+            leg_origin = leg.get('origin')
+            leg_destination = leg.get('destination')
 
-            titleString = "%s line" % (headStation)
-            displayString = "%s %s depart -&gt; %s %s arrive" % (timeDepart, legOrigin, timeArrive, legDestination)
-            field = {"title": titleString, "value": displayString, "short": short}
+            title_string = "%s line" % (head_station)
+            display_string = "%s %s depart -&gt; %s %s arrive" % (time_depart, leg_origin, time_arrive, leg_destination)
+            field = {"title": title_string, "value": display_string, "short": short}
 
             attachment['fields'].append(field)
         
-        slackResponse['attachments'].append(attachment)
+        slack_response['attachments'].append(attachment)
     
-    slackResponse['footer'] = "bart slack app"
-    slackResponse['ts'] = time.time()
+    slack_response['footer'] = "bart slack app"
+    slack_response['ts'] = time.time()
 
-    return slackResponse
+    return slack_response
