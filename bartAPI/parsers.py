@@ -2,6 +2,19 @@ import lxml
 from lxml import etree
 import time
 
+# display the help text
+def display_help():
+    slack_response = {'text': '*Thanks for using my Bart Slack Integration!*\n*List of available commands:*', 'attachments': [
+        {'title': '/bart etd [station]', 'color': '#ff0000', 'text': 'returns the estimated time of departure for trains at the entered [station]'},
+        {'title': '/bart depart [origin] [destination]', 'color': '#0099cc', 'text': 'returns the closest times for trains departing the [origin] station and heading to the [destination] station'}
+    ]}
+
+    slack_response['footer'] = "bart slack app"
+    slack_response['ts'] = time.time()
+
+    return slack_response
+
+
 # parse the XML response for the etd command
 def etd_parse(xml):
     tree = etree.fromstring(xml)
@@ -28,12 +41,12 @@ def etd_parse(xml):
             car_length = estimate.findtext('./length')
             
             display_string = "%s car train departing in %s minutes" % (car_length, minutes)
+            if minutes == "Leaving":
+                display_string = "%s car train departing now" % (car_length)
 
             field = {"value": display_string, "short": "false"}
-
             attachment['fields'].append(field)
             attachment['color'] = color
-            
 
         slack_response['attachments'].append(attachment)
 
@@ -41,6 +54,7 @@ def etd_parse(xml):
     slack_response['ts'] = time.time()
 
     return slack_response
+
 
 # parse the xml response for the sched - depart command
 def depart_parse(xml):
