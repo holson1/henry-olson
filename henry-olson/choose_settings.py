@@ -28,6 +28,4 @@ else:
 	        'PORT': '',
         }
     }
-    ALLOWED_HOSTS = [
-        'vultr.guest'
-    ]
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'henry-olson.com', 'vultr.guest']
