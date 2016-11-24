@@ -19,9 +19,8 @@ class TokenError(Error):
         message -- explanation of the error
     """
 
-    def __init__(self, token, message):
+    def __init__(self, token):
         self.token = token
-        self.message = message
 
 class CommandError(Error):
     pass
@@ -32,7 +31,8 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 def bart_api_request(request):
     try:
-        token = request.POST["token"]
+        #token = request.POST["token"]
+        token = request.POST.get("token", "")
         token_valid = validate_token(token)
 
         api_key = "QJ49-P29I-9JGT-DWE9"
@@ -75,7 +75,7 @@ def bart_api_request(request):
         return JsonResponse(response_dict)
     except TokenError:
         print "token error"
-        return HttpResponse("The token was invalid")
+        return HttpResponse("A valid slack token was not provided as part of the request.")
     except CommandError:
         print "command error"
         return HttpResponse("Invalid command")
@@ -86,7 +86,7 @@ def validate_token(token):
     if token == "19lVoTg9TKAE5wUn45zQkh6t":
         valid = True
     else:
-        raise TokenError
+        raise TokenError(token)
 
 def parse_command(payload_text):
     # get list of valid commands...simple for now but we may want to store it and get its
