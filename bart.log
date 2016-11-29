@@ -1,0 +1,8 @@
+Does this work?
+[29/Nov/2016 23:20:42] DEBUG [bart:34] Does this work?
+[29/Nov/2016 23:20:44] DEBUG [bart:34] Does this work?
+[29/Nov/2016 23:27:59] DEBUG [bart:34] Does this work?
+[29/Nov/2016 23:29:04] DEBUG [bart:34] Does this work?
+[29/Nov/2016 23:35:52] DEBUG [bart:34] bart_api_request called
+[29/Nov/2016 23:35:52] DEBUG [bart:39] valid slack token
+[29/Nov/2016 23:35:52] DEBUG [bart:53] valid command entered

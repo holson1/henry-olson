@@ -25,16 +25,18 @@ class TokenError(Error):
 class CommandError(Error):
     pass
 
-logger = logging.getLogger(__name__)
+log = logging.getLogger('bart')
 
 # Get info from the bart API
 @csrf_exempt
 def bart_api_request(request):
     try:
+        log.debug("bart_api_request called")
         #token = request.POST["token"]
         token = request.POST.get("token", "")
         token_valid = validate_token(token)
 
+        log.debug("valid slack token")
         api_key = "QJ49-P29I-9JGT-DWE9"
 
         command_text = ""
@@ -48,6 +50,7 @@ def bart_api_request(request):
         payload_text = request.POST.get("text")
         valid_command = parse_command(payload_text)
         print "valid command: ", valid_command
+        log.debug("valid command entered")
 
         #link = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=24th&key=QJ49-P29I-9JGT-DWE9"
         #link = "http://api.bart.gov/api/sched.aspx?cmd=depart&orig=24th&dest=mont&key=QJ49-P29I-9JGT-DWE9"
