@@ -81,6 +81,7 @@ def bart_api_request(request):
         return HttpResponse("Invalid command")
 
 # check the Slack token
+@csrf_exempt
 def validate_token(token):
     valid = False
     if token == "19lVoTg9TKAE5wUn45zQkh6t":
@@ -88,6 +89,7 @@ def validate_token(token):
     else:
         raise TokenError(token)
 
+@csrf_exempt
 def parse_command(payload_text):
     # get list of valid commands...simple for now but we may want to store it and get its
     valid_commands = {  "etd": 
@@ -167,6 +169,7 @@ def parse_command(payload_text):
         raise CommandError
 
 # validate params which require specific values
+@csrf_exempt
 def validate_param(type, value):
     # TODO: get this from the model, which will in turn get it from an API call
     valid_stations = ["24th", "mont", "frmt", "16th", "sfia"]
