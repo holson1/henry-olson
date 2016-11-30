@@ -31,12 +31,11 @@ log = logging.getLogger('bart')
 @csrf_exempt
 def bart_api_request(request):
     try:
-        log.debug("bart_api_request called")
-        #token = request.POST["token"]
+        #log.debug("bart_api_request called")
         token = request.POST.get("token", "")
         token_valid = validate_token(token)
 
-        log.debug("valid slack token")
+        #log.debug("valid slack token")
         api_key = "QJ49-P29I-9JGT-DWE9"
 
         command_text = ""
@@ -50,7 +49,7 @@ def bart_api_request(request):
         payload_text = request.POST.get("text")
         valid_command = parse_command(payload_text)
         print "valid command: ", valid_command
-        log.debug("valid command entered")
+        #log.debug("valid command entered")
 
         #link = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=24th&key=QJ49-P29I-9JGT-DWE9"
         #link = "http://api.bart.gov/api/sched.aspx?cmd=depart&orig=24th&dest=mont&key=QJ49-P29I-9JGT-DWE9"
@@ -84,7 +83,6 @@ def bart_api_request(request):
         return HttpResponse("Invalid command")
 
 # check the Slack token
-@csrf_exempt
 def validate_token(token):
     valid = False
     if token == "19lVoTg9TKAE5wUn45zQkh6t":
@@ -92,7 +90,7 @@ def validate_token(token):
     else:
         raise TokenError(token)
 
-@csrf_exempt
+
 def parse_command(payload_text):
     # get list of valid commands...simple for now but we may want to store it and get its
     valid_commands = {  "etd": 
@@ -172,7 +170,6 @@ def parse_command(payload_text):
         raise CommandError
 
 # validate params which require specific values
-@csrf_exempt
 def validate_param(type, value):
     # TODO: get this from the model, which will in turn get it from an API call
     valid_stations = ["24th", "mont", "frmt", "16th", "sfia"]

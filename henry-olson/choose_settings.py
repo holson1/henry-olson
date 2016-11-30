@@ -16,6 +16,7 @@ if node in dev_machines:
         }
     }
     ALLOWED_HOSTS = ['*']
+    SECURE_SSL_REDIRECT = False
 else:
     DEBUG = False
     DATABASES = {
@@ -29,3 +30,4 @@ else:
         }
     }
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.henry-olson.com']
+    SECURE_SSL_REDIRECT = True
