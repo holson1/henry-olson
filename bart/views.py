@@ -4,6 +4,7 @@ from django.http import JsonResponse
 import requests
 import json
 import logging
+import os
 from . import parsers
 from django.views.decorators.csrf import csrf_exempt
 
@@ -31,11 +32,11 @@ log = logging.getLogger('bart')
 @csrf_exempt
 def bart_api_request(request):
     try:
-        #log.debug("bart_api_request called")
+        log.debug("bart_api_request called")
         token = request.POST.get("token", "")
         token_valid = validate_token(token)
 
-        #log.debug("valid slack token")
+        log.debug("valid slack token")
         api_key = "QJ49-P29I-9JGT-DWE9"
 
         command_text = ""
@@ -49,7 +50,7 @@ def bart_api_request(request):
         payload_text = request.POST.get("text")
         valid_command = parse_command(payload_text)
         print "valid command: ", valid_command
-        #log.debug("valid command entered")
+        log.debug("valid command entered")
 
         #link = "http://api.bart.gov/api/etd.aspx?cmd=etd&orig=24th&key=QJ49-P29I-9JGT-DWE9"
         #link = "http://api.bart.gov/api/sched.aspx?cmd=depart&orig=24th&dest=mont&key=QJ49-P29I-9JGT-DWE9"
@@ -85,7 +86,10 @@ def bart_api_request(request):
 # check the Slack token
 def validate_token(token):
     valid = False
-    if token == "19lVoTg9TKAE5wUn45zQkh6t":
+    #if token == "19lVoTg9TKAE5wUn45zQkh6t":
+    #print os.environ.get('BART_SLACK_TOKEN')
+    if token == os.environ.get('BART_SLACK_TOKEN'):
+        #print "token found"
         valid = True
     else:
         raise TokenError(token)
