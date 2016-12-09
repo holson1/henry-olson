@@ -17,6 +17,8 @@ if node in dev_machines:
     }
     ALLOWED_HOSTS = ['*']
     SECURE_SSL_REDIRECT = False
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
 else:
     DEBUG = False
     DATABASES = {
@@ -31,3 +33,5 @@ else:
     }
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.henry-olson.com']
     SECURE_SSL_REDIRECT = True
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = choose_settings.ALLOWED_HOSTS
 # Application definition
 
 INSTALLED_APPS = [
+    'bart.apps.BartConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,8 +52,8 @@ MIDDLEWARE = [
 ]
 
 # https
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = choose_settings.CSRF_COOKIE_SECURE
+SESSION_COOKIE_SECURE = choose_setting.SESSION_COOKIE_SECURE
 SECURE_SSL_REDIRECT = choose_settings.SECURE_SSL_REDIRECT
 
 # security

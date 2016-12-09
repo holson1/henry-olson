@@ -2,3 +2,4 @@ bartenv/*
 venv/*
 *.pyc
 *.log
+./db*

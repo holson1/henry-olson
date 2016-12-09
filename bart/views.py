@@ -96,7 +96,7 @@ def validate_token(token):
 
 
 def parse_command(payload_text):
-    # get list of valid commands...simple for now but we may want to store it and get its
+    # get list of valid commands...simple for now but we may want to store/retrieve it
     valid_commands = {  "etd": 
                             {"link": "http://api.bart.gov/api/etd.aspx?", "parser": "etd_parse", 
                                 "params": [
