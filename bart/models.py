@@ -25,6 +25,16 @@ class Parameter(models.Model):
     commands = models.ManyToManyField(Command)
     order = models.IntegerField(default=0)
     
-
     def __unicode__(self):
         return self.name
+
+class Station(models.Model):
+    key = models.CharField(primary_key=True, max_length=10)
+    name = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return "%s" % (self.name)
+
+class StationAlias(models.Model):
+    alias = models.CharField(max_length=200)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)

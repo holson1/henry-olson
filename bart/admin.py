@@ -11,5 +11,13 @@ class ParameterAdmin(admin.ModelAdmin):
     list_display = ("name", "param_type")
     ordering = ("order",)
 
+class StationAliasAdmin(admin.ModelAdmin):
+    list_display = ("alias",)
+
+class StationAdmin(admin.ModelAdmin):
+    list_display = ("key", "name")
+
 admin.site.register(Command, CommandAdmin)
 admin.site.register(Parameter, ParameterAdmin)
+admin.site.register(StationAlias, StationAliasAdmin)
+admin.site.register(Station, StationAdmin)

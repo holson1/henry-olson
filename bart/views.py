@@ -5,10 +5,12 @@ import requests
 import json
 import logging
 import os
+import lxml
+from lxml import etree
 from datetime import datetime
 from . import parsers
 from django.views.decorators.csrf import csrf_exempt
-from bart.models import Command, Parameter
+from bart.models import Command, Parameter, Station, StationAlias
 from django.db.models import Q
 
 class Error(Exception):
@@ -31,6 +33,9 @@ class CommandError(Error):
 
 log = logging.getLogger('bart')
 
+# can be global...why not
+api_key = "QJ49-P29I-9JGT-DWE9"
+
 # Get info from the bart API
 @csrf_exempt
 def bart_api_request(request):
@@ -40,7 +45,6 @@ def bart_api_request(request):
         token_valid = validate_token(token)
 
         #log.debug("valid slack token")
-        api_key = "QJ49-P29I-9JGT-DWE9"
 
         # check for slack command text...if nothing arrives, that's not a great sign
         if not("text" in request.POST):
@@ -94,17 +98,11 @@ def parse_command(payload_text):
 
         required = len(p_command.parameter_set.filter(required=True))
         optional = len(p_command.parameter_set.filter(required=False))
-        #print "required = " + str(required)
-        #print "optional = " + str(optional)
-        #print len(parameters)
 
         # if we have the right number of params
         if len(parameters) >= required and len(parameters) <= required + optional:
-            #print "name: " + p_command.name
-            #print "command: " + p_command.api_cmd
             
             expected_parameters = p_command.parameter_set.all().order_by('order')
-            #print expected_parameters
 
             link = p_command.link
             # add command
@@ -121,7 +119,7 @@ def parse_command(payload_text):
                     continue
 
                 # check to make sure the other parameters are valid
-                validate_param(expected_parameters[i].param_type, param)
+                param = validate_param(expected_parameters[i].param_type, param)
                 link += expected_parameters[i].name + "=" + param + "&"
                 i += 1
 
@@ -130,30 +128,49 @@ def parse_command(payload_text):
             action_dict["link"] = link
             action_dict["parser"] = p_command.parser
         
-        print "-----------"
+        #print "-----------"
 
         if found_matching_command:
             return action_dict  
 
 # validate params which require specific values
 def validate_param(param_type, value):
-    #print "validate_param"
-    #print param_type
-    #print value
+    # Uncomment this if we need to pull/populate the stations for whatever reason
+    #get_all_stations()
 
-    # TODO: get this from the model, which will in turn get it from an API call
-    valid_stations = ["24th", "mont", "frmt", "16th", "sfia"]
     valid_dirs = ["n", "s"]
 
     if param_type == "" or param_type == "command" or param_type == "num_trains":
-        pass
+        return value
 
+    # check both the direct station matches and the aliases
     if param_type == "station":
-        if value not in valid_stations:
+        station_matches = Station.objects.filter(Q(name__icontains=value) | Q(key__icontains=value))
+        alias_matches = StationAlias.objects.filter(alias__icontains=value)
+        if len(station_matches) > 0:
+            for station in station_matches:
+                return station.key
+        elif len(alias_matches) > 0:
+            for alias in alias_matches:
+                return alias.station.key
+        else:
             print "invalid station"
             raise CommandError
     
     if param_type == "dir":
-        if value not in valid_dirs:
+        if value in valid_dirs:
+            return value
+        else:
             print "invalid dir"
             raise CommandError
+
+# populate stations list
+def get_all_stations():
+    link = "http://api.bart.gov/api/stn.aspx?cmd=stns&key=" + api_key
+    xml_response = requests.get(link)
+    tree = etree.fromstring(xml_response.content)
+    stations = tree.findall('./stations/station')
+    for station in stations:
+        name =  station.findtext('./name')
+        abbr = station.findtext('./abbr').upper()
+        station_instance = Station.objects.create(name=name, key=abbr)
