@@ -4,7 +4,7 @@ from django.contrib import admin
 from bart.models import *
 
 class CommandAdmin(admin.ModelAdmin):
-    list_display = ("name", "api_cmd", "link", "parser")
+    list_display = ("name", "api_cmd", "link", "formatter")
     list_display_links = ("name", "api_cmd")
 
 class ParameterAdmin(admin.ModelAdmin):

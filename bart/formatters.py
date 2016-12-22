@@ -15,8 +15,8 @@ def display_help():
     return slack_response
 
 
-# parse the XML response for the etd command
-def etd_parse(xml):
+# format the XML response for the etd command
+def etd_format(xml):
     tree = etree.fromstring(xml)
     #time = tree.xpath("/root/time/text()")
 
@@ -56,8 +56,8 @@ def etd_parse(xml):
     return slack_response
 
 
-# parse the xml response for the sched - depart command
-def depart_parse(xml):
+# format the xml response for the sched - depart command
+def depart_format(xml):
     # let's store this somehow, along with the full head station names
     head_station_info = {'PITT': '#ffff33', 'SFIA': '#ffff33', 'MLBR': '#ffff33', 'DALY': '#0099cc', 'DUBL': '#0099cc'}
 

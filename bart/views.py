@@ -8,7 +8,7 @@ import os
 import lxml
 from lxml import etree
 from datetime import datetime
-from . import parsers
+from . import formatters
 from django.views.decorators.csrf import csrf_exempt
 from bart.models import Command, Parameter, Station, StationAlias
 from django.db.models import Q
@@ -44,8 +44,6 @@ def bart_api_request(request):
         token = request.POST.get("token", "")
         token_valid = validate_token(token)
 
-        #log.debug("valid slack token")
-
         # check for slack command text...if nothing arrives, that's not a great sign
         if not("text" in request.POST):
             raise CommandError
@@ -55,14 +53,14 @@ def bart_api_request(request):
         action_dict = parse_command(payload_text)
 
         link = action_dict["link"]
-        parser = action_dict["parser"]
+        formatter = action_dict["formatter"]
 
         if link == "":
-            response_dict = getattr(parsers, parser)()
+            response_dict = getattr(formatters, formatter)()
         else:
             link = link + "key=" + api_key
             xml_response = requests.get(link)
-            response_dict = getattr(parsers, parser)(xml_response.content)
+            response_dict = getattr(formatters, formatter)(xml_response.content)
 
         return JsonResponse(response_dict)
     except TokenError:
@@ -82,7 +80,7 @@ def validate_token(token):
 
 
 def parse_command(payload_text):
-    action_dict = {"link": "", "parser": ""}
+    action_dict = {"link": "", "formatter": ""}
     link = ""
     found_matching_command = False
 
@@ -126,7 +124,7 @@ def parse_command(payload_text):
 
             found_matching_command = True
             action_dict["link"] = link
-            action_dict["parser"] = p_command.parser
+            action_dict["formatter"] = p_command.formatter
         
         #print "-----------"
 

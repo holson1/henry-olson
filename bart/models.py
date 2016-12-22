@@ -12,7 +12,7 @@ class Command(models.Model):
     name = models.CharField(max_length=100, blank=True)
     api_cmd = models.CharField(max_length=50)
     link = models.CharField(max_length=100, blank=True)
-    parser = models.CharField(max_length=50)
+    formatter = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
