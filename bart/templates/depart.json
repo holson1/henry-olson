@@ -1,0 +1,40 @@
+{
+	"text": "*Trips from Daly City to Richmond :*",
+	"attachments": [
+		{
+			"color": "#ffff33", "fields": [
+				{
+					"short": "false",
+					"value": "1:24 PM Daly City  :arrow_right:  1:53 PM 19th St. Oakland",
+					"title": "Pittsburg/Bay Point line"
+				}
+			]
+		},
+		{
+			"text": "Transfer at 19th St Oakland"
+		}, 
+		{
+			"color": "#ff0000", "fields": [
+				{
+					"short": "false",
+					"value": "1:53 PM 19th St. Oakland  :arrow_right:  2:15 PM Richmond",
+					"title": "Richmond line"
+				}
+			]
+		},
+		{
+			"color": "#ffffff",
+			"text": " "
+		}, 
+		{
+			"color": "#ff0000",
+			"fields": [
+				{
+					"short": "false",
+					"value": "1:31 PM Daly City  :arrow_right:  2:22 PM Richmond",
+					"title": "Richmond line"
+				}
+			]
+		}
+	]
+}

@@ -31,9 +31,15 @@ class Parameter(models.Model):
 class Station(models.Model):
     key = models.CharField(primary_key=True, max_length=10)
     name = models.CharField(max_length=200)
+    head_station = models.BooleanField(default=False)
 
     def __unicode__(self):
         return "%s" % (self.name)
+
+class Line(models.Model):
+    name = models.CharField(max_length=100)
+    hex_color = models.CharField(max_length=7, blank=True)
+    stations = models.ManyToManyField(Station)
 
 class StationAlias(models.Model):
     alias = models.CharField(max_length=200)
