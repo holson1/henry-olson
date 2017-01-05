@@ -29,7 +29,10 @@ class TokenError(Error):
         self.token = token
 
 class CommandError(Error):
-    pass
+    def __init__(self, command, response):
+        self.command = command
+        self.response = "Invalid command: " + response
+    
 
 log = logging.getLogger('bart')
 
@@ -46,7 +49,7 @@ def bart_api_request(request):
 
         # check for slack command text...if nothing arrives, that's not a great sign
         if not("text" in request.POST):
-            raise CommandError
+            raise CommandError("", "No command was received")
 
         # parse the entered command and return information on the link to hit and the parser to call
         payload_text = request.POST.get("text")
@@ -66,9 +69,9 @@ def bart_api_request(request):
     except TokenError:
         print "token error"
         return HttpResponse("A valid slack token was not provided as part of the request.")
-    except CommandError:
+    except CommandError as ce:
         print "command error"
-        return HttpResponse("Invalid command")
+        return HttpResponse(ce.response)
 
 # check the Slack token
 def validate_token(token):
@@ -125,11 +128,12 @@ def parse_command(payload_text):
             found_matching_command = True
             action_dict["link"] = link
             action_dict["formatter"] = p_command.formatter
-        
-        #print "-----------"
 
         if found_matching_command:
-            return action_dict  
+            return action_dict
+    
+    if not found_matching_command:
+        raise CommandError("", "'" + payload_text + "' is not a valid command. Type '/bart help' to see a list of valid commands.")
 
 # validate params which require specific values
 def validate_param(param_type, value):
@@ -143,8 +147,12 @@ def validate_param(param_type, value):
 
     # check both the direct station matches and the aliases
     if param_type == "station":
-        station_matches = Station.objects.filter(Q(name__icontains=value) | Q(key__icontains=value))
+        key_matches = Station.objects.filter(Q(key__icontains=value))
+        station_matches = Station.objects.filter(Q(name__icontains=value))
         alias_matches = StationAlias.objects.filter(alias__icontains=value)
+        if len(key_matches) > 0:
+            for station in key_matches:
+                return station.key
         if len(station_matches) > 0:
             for station in station_matches:
                 return station.key
@@ -153,14 +161,14 @@ def validate_param(param_type, value):
                 return alias.station.key
         else:
             print "invalid station"
-            raise CommandError
+            raise CommandError("", "'" + value + "' is not a valid station name.")
     
     if param_type == "dir":
         if value in valid_dirs:
             return value
         else:
             print "invalid dir"
-            raise CommandError
+            raise CommandError("", "'" + value + "' is not a valid direction. Use 'n' or 's'.")
 
 # populate stations list
 def get_all_stations():
