@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{% load compile_static %}
+{% load static %}
+
+<html>
+<head>
+    <title>Bart Trip Planner</title>
+
+    {# generic stuff, can be exported to top level template #}
+
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- bootstrap -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    {% if debug %}
+        <!-- client-side compiling for development -->
+        <link rel="stylesheet/less" type="text/css" href="{% static 'bart/style.less' %}"/>
+        <script src="{% static 'js/less.min.js' %}" type="text/javascript"></script>
+    {% else %}
+        <!-- server-side compiling for production -->
+        <link rel="stylesheet" type="text/css" href="{% static 'bart/style.less'|compile %}"/>
+    {% endif %}
+    <!-- working example of including a regular stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{% static 'bart/test.css' %}"/>
+
+    <!-- bootstrap -->
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" defer></script>
+    <!-- jQuery -->
+    <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}" defer></script>
+
+    {# end generic stuff #}
+</head>
+<body>
+    <h1>Test</h1>
+    {% if debug %}
+        <p>debug</p>
+    {% endif %}
+    <div id="content">
+        <h1>Less test</h1>
+        <p>CSS test</p>
+    </div>
+</body>
+</html>

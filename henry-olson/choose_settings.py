@@ -19,6 +19,10 @@ if node in dev_machines:
     SECURE_SSL_REDIRECT = False
     CSRF_COOKIE_SECURE = False
     SESSION_COOKIE_SECURE = False
+    INTERNAL_IPS = (
+        '0.0.0.0',
+        '127.0.0.1',
+    )
 else:
     DEBUG = False
     DATABASES = {
@@ -35,3 +39,4 @@ else:
     SECURE_SSL_REDIRECT = True
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
+    INTERNAL_IPS = ()

@@ -26,6 +26,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = choose_settings.DEBUG
 
+INTERNAL_IPS = choose_settings.INTERNAL_IPS
+
 ALLOWED_HOSTS = choose_settings.ALLOWED_HOSTS
 
 
@@ -33,6 +35,7 @@ ALLOWED_HOSTS = choose_settings.ALLOWED_HOSTS
 
 INSTALLED_APPS = [
     'bart.apps.BartConfig',
+    'static_precompiler',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,6 +129,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'static_precompiler.finders.StaticPrecompilerFinder',
+)
+STATIC_PRECOMPILER_COMPILERS = (
+    ('static_precompiler.compilers.LESS', {
+        "executable": "/usr/local/bin/lessc"
+    }),
+)
+
 
 LOGGING = {
     'version': 1,

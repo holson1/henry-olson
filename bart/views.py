@@ -39,6 +39,11 @@ log = logging.getLogger('bart')
 # can be global...why not
 api_key = "QJ49-P29I-9JGT-DWE9"
 
+# display the landing page for Bart Trip Planner
+def bart_landing(request):
+    log.debug("landing page called")
+    return render(request, "bart/index.html")
+
 # Get info from the bart API
 @csrf_exempt
 def bart_api_request(request):
@@ -46,6 +51,7 @@ def bart_api_request(request):
 
         token = request.POST.get("token", "")
         token_valid = validate_token(token)
+        log.debug("valid slack token")
 
         # check for slack command text...if nothing arrives, that's not a great sign
         if not("text" in request.POST):
@@ -54,6 +60,7 @@ def bart_api_request(request):
         # parse the entered command and return information on the link to hit and the parser to call
         payload_text = request.POST.get("text")
         action_dict = parse_command(payload_text)
+        log.debug("valid command entered")
 
         link = action_dict["link"]
         formatter = action_dict["formatter"]

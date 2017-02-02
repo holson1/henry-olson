@@ -99,12 +99,17 @@ def depart_format(xml):
 
             lines = Line.objects.filter(Q(stations__name__icontains=leg_destination))
             lines = lines.filter(Q(stations__name__icontains=leg_origin))
+            # this isn't right... we might have a head station not in the line name
             lines = lines.filter(Q(stations__name__icontains=head_station))
 
+            print "HEAD STATION: " + head_station
             for line in lines:
+                print line.name
                 # only grab the first color
                 if line_color == "":
                     line_color = line.hex_color
+                
+            print "---"
 
             # the spacer is used to denote a transfer or separate trips clearly
             spacer = {}
