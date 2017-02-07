@@ -1,14 +1,53 @@
+// VARIABLES
+@font-white: #fff;
+@font-light: #aaa;
+@font-med: #666;
+@font-dark: #333;
+@font-black: #000;
+
 @green: #0f0;
-@lightgray: #ddd;
+@light-gray: #eee;
+@bg-light: #fff;
+
+@dark-teal: #034;
+@mid-teal: #057;
+@light-teal: #089;
 
 @header-font: Roboto;
+@text-font: Roboto;
+
+// COMMON STYLES
+body {
+    background: @light-gray;
+}
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: @header-font
+    font-family: @header-font;
+    color: @font-dark;
 }
 
-#content {
-    h1 {
-        color: @lightgray;
-    }
+p {
+    font-family: @text-font;
+    color: @font-black;
 }
+
+// CLASSES
+.main-nav {
+    height: 50px;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.content {
+    background: @bg-light;
+}
+
+.spacer {
+    height: 25px;
+}
+
+// all headers should be centered and may have some other properties
+.project-header {
+    text-align: center;
+}
+
+// TESTING BELOW HERE

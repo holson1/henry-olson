@@ -3,7 +3,7 @@ import os
 import platform
 
 node = platform.node()
-dev_machines = ('Henrys-MacBook-Pro.local')
+dev_machines = ('Henrys-MacBook-Pro.local', 'Henrys-MBP')
 prod_machines = ('vultr.guest')
 
 if node in dev_machines:
