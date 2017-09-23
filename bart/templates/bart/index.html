@@ -21,15 +21,17 @@
         <link rel="stylesheet" type="text/css" href="{% static 'bart/style.less'|compile %}"/>
     {% endif %}
 
-    <!-- bootstrap -->
-    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" defer></script>
     <!-- jQuery -->
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}" defer></script>
+    <!-- bootstrap -->
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}" defer></script>
+    
 
     {# end generic stuff #}
 </head>
 <body>
 
+    {# nav bar #}
     <div class="container-fluid">
         <div class="row">
             <nav class="main-nav">
@@ -45,23 +47,59 @@
 
     <div class="container content">
 
+        {# title image #}
         <div class="row">
-            <div class="col-xs-10 col-xs-offset-1 project-header">
-                <h1>Bart Trip Planner</h1>
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 center">
+                <img class="img-responsive" src="{% static 'img/bart_trip_planner.png' %}"/>
             </div>
         </div> 
+        
+        <div class="spacer">
+        </div>
+
         <div class="row">
-            <div class="col-xs-1 col-xs-offset-5">
-                <h4><i>for</i></h4>
-            </div>
-            <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2">
-                <img class="img-responsive" src="{% static 'img/slack.svg' %}"/>
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <p class="center" >Get real-time bart schedule information...all with a simple Slack command.</p>
             </div>
         </div>
-        
+
+        {# image 1 #}
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <img class="img-responsive" src="{% static 'img/bart.jpg' %}"/>
+            </div>
+        </div>
+
+        <div class="spacer">
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <p>"/bart station" returns a list of upcoming departure times for the station.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1">
+                <img class="img-responsive" src="{% static 'img/bart_etd_new.png' %}"/>
+            </div>
+        </div>
+
+        <div class="spacer">
+        </div>
+
+        <div class="spacer">
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <p>"/bart station1 station2" returns a schedule for your chosen trip.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1">
+                <img class="img-responsive" src="{% static 'img/bart_depart_new.png' %}"/>
             </div>
         </div>
 

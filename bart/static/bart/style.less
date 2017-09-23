@@ -28,17 +28,20 @@ h1, h2, h3, h4, h5, h6 {
 
 p {
     font-family: @text-font;
-    color: @font-black;
+    font-size: 1.6em;
+    color: @font-dark;
 }
 
 // CLASSES
 .main-nav {
     height: 50px;
     background: rgba(255, 255, 255, 0.5);
+    border-bottom: 2px solid #ddd;
 }
 
 .content {
     background: @bg-light;
+    border-right: 2px solid #ddd;
 }
 
 .spacer {
@@ -46,7 +49,7 @@ p {
 }
 
 // all headers should be centered and may have some other properties
-.project-header {
+.center {
     text-align: center;
 }
 
