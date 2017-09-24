@@ -2,28 +2,11 @@
 import os
 import platform
 
-node = platform.node()
-dev_machines = ('Henrys-MacBook-Pro.local', 'Henrys-MBP')
-prod_machines = ('vultr.guest')
+NODE = platform.node()
+DEV_MACHINES = ('Henrys-MacBook-Pro.local', 'Henrys-MBP')
+PROD_MACHINES = ('vultr.guest')
 
-if node in dev_machines:
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    DEBUG = True
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-    ALLOWED_HOSTS = ['*']
-    SECURE_SSL_REDIRECT = False
-    CSRF_COOKIE_SECURE = False
-    SESSION_COOKIE_SECURE = False
-    INTERNAL_IPS = (
-        '0.0.0.0',
-        '127.0.0.1',
-    )
-else:
+if NODE in PROD_MACHINES:
     DEBUG = False
     DATABASES = {
         'default': {
@@ -40,3 +23,20 @@ else:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     INTERNAL_IPS = ()
+else:
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    DEBUG = True
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+    ALLOWED_HOSTS = ['*']
+    SECURE_SSL_REDIRECT = False
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
+    INTERNAL_IPS = (
+        '0.0.0.0',
+        '127.0.0.1',
+    )
