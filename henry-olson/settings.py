@@ -31,6 +31,9 @@ INTERNAL_IPS = choose_settings.INTERNAL_IPS
 ALLOWED_HOSTS = choose_settings.ALLOWED_HOSTS
 
 
+# bart api key
+BART_API_KEY = "QJ49-P29I-9JGT-DWE9"
+
 # Application definition
 
 INSTALLED_APPS = [

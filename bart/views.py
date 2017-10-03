@@ -176,13 +176,3 @@ def validate_param(param_type, value):
             print "invalid dir"
             raise CommandError("", "'" + value + "' is not a valid direction. Use 'n' or 's'.")
 
-# populate stations list
-def get_all_stations():
-    link = "http://api.bart.gov/api/stn.aspx?cmd=stns&key=" + api_key
-    xml_response = requests.get(link)
-    tree = etree.fromstring(xml_response.content)
-    stations = tree.findall('./stations/station')
-    for station in stations:
-        name =  station.findtext('./name')
-        abbr = station.findtext('./abbr').upper()
-        station_instance = Station.objects.create(name=name, key=abbr)
