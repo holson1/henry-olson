@@ -48,9 +48,8 @@ def bart_landing(request):
 @csrf_exempt
 def bart_api_request(request):
     try:
-
         token = request.POST.get("token", "")
-        token_valid = validate_token(token)
+        validate_token(token)
         log.debug("valid slack token")
 
         # check for slack command text...if nothing arrives, that's not a great sign
